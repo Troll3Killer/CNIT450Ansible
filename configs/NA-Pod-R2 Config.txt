@@ -1,0 +1,332 @@
+hostname na-pod-R2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable password enterprise
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+!
+!
+ipv6 unicast-routing
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+crypto pki trustpoint TP-self-signed-647736848
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-647736848
+ revocation-check none
+ rsakeypair TP-self-signed-647736848
+!
+!
+crypto pki certificate chain TP-self-signed-647736848
+ certificate self-signed 01
+  3082032E 30820216 A0030201 02020101 300D0609 2A864886 F70D0101 05050030
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 36343737 33363834 38301E17 0D303030 39313430 38313934
+  375A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3634 37373336
+  38343830 82012230 0D06092A 864886F7 0D010101 05000382 010F0030 82010A02
+  82010100 D47CBA44 42751E19 54E275F0 9EDC8B80 A86E83E2 D4A3EC7B D47217C2
+  CA794D51 4D4FBC87 32B8B69D CFECB029 8340B89E 22AE45F0 AB1279CC 04E659CC
+  8C3E3716 FD3352D6 56180F33 71BDED04 403F3216 CBD2EC39 31ABEEA2 6DE29DF6
+  FF1949E4 F46F4299 802AE82A 85A3463F 889B490F F9181125 1CFC37E5 6D22E258
+  B2A8E230 F9C4FFE5 D823A3A1 04BAD45C 8B9E41C2 5911ACB6 AA38615E 2663EE99
+  F2EC76DB 917627D5 C7418BE1 8ED4CCD9 58953E52 E7331AE2 5B570A00 743CD4D1
+  6C0A34E3 3A9989AF 58E7DD2E 5C33785E 066E0E22 D5AB399A 0F56AA66 680E05EA
+  61EEBD22 BB0117B0 00EAE479 02AD797E CFD6107C 076C203B 3C12653B A332CE61
+  8D4BC34F 02030100 01A35330 51300F06 03551D13 0101FF04 05300301 01FF301F
+  0603551D 23041830 1680145A 814D6277 C32B48E0 A631FAB5 040259E9 932E3D30
+  1D060355 1D0E0416 04145A81 4D6277C3 2B48E0A6 31FAB504 0259E993 2E3D300D
+  06092A86 4886F70D 01010505 00038201 0100BD6C F10993DF 67DBD389 E5D01FE1
+  44FB529B 785DC36C 201F8FAF 9375DA1C 835C8D42 8C477F45 3AB0497B A86D861C
+  716F28D9 F335D351 A67883B4 1B37D447 A2C226E3 52FD4C1E 7A3EB37E 3821C388
+  59F28458 FCBB5ABC 37552D27 FAF7CCA2 40B4F08A A8F591A8 8ACD0569 2F3BEC47
+  C8D06269 4F87F585 D68748E3 4FDA7F2A 2285E34B 93100A6C D710E67B DD21BB49
+  63E3BDAB 1A25F9F2 25BAC1F6 DFF472AE 909AE597 62429761 FA566057 70A1A741
+  39FED002 F1CC3361 A76537EF 7E72CF66 0537F4CD 17B355C7 7C8F3460 6DEE6F9D
+  CAD5258E 057ED7AB 491B20D3 2AA12522 FD4D1EAB 18724879 E6283004 C3D6A016
+  0E21AB51 65FE2F98 077E370B F0989FB6 8E61
+        quit
+!
+!
+license udi pid ISR4331/K9 sn FLM24090AAE
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ no ip address
+ negotiation auto
+ ipv6 address 2001:DB8::22:0:2/126
+!
+interface GigabitEthernet0/0/1
+ ip address 10.22.72.1 255.255.255.0
+ negotiation auto
+ ipv6 address 2001:DB8::FF:72:0:1/96
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface Serial0/1/0
+ no ip address
+ shutdown
+!
+interface Serial0/1/1
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ shutdown
+ negotiation auto
+!
+!
+router eigrp NA-EIGRP
+ !
+ address-family ipv4 unicast autonomous-system 65510
+  !
+  topology base
+  exit-af-topology
+  network 0.0.0.0
+  network 10.22.72.0 0.0.0.255
+  eigrp router-id 2.2.2.2
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 65510
+  !
+  topology base
+   redistribute bgp 65510 metric 10000 10 255 1 1500
+  exit-af-topology
+  eigrp router-id 2.2.2.2
+ exit-address-family
+!
+router bgp 65510
+ bgp router-id 2.2.2.2
+ bgp log-neighbor-changes
+ neighbor 2001:DB8::22:0:1 remote-as 64512
+ !
+ address-family ipv4
+  no neighbor 2001:DB8::22:0:1 activate
+ exit-address-family
+ !
+ address-family ipv6
+  redistribute eigrp 65510
+  default-information originate
+  network 2001:DB8::1/128
+  neighbor 2001:DB8::22:0:1 activate
+ exit-address-family
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+ip tftp source-interface GigabitEthernet0/0/1
+!
+!
+ipv6 route ::/0 GigabitEthernet0/0/0 2001:DB8::22:0:1
+!
+!
+snmp-server community snmpiscool RO
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps vrrp
+snmp-server enable traps pfr
+snmp-server enable traps flowmon
+snmp-server enable traps ds1
+snmp-server enable traps entity-perf throughput-notif
+snmp-server enable traps ds3
+snmp-server enable traps call-home message-send-fail server-fail
+snmp-server enable traps tty
+snmp-server enable traps eigrp
+snmp-server enable traps casa
+snmp-server enable traps ospf state-change
+snmp-server enable traps ospf errors
+snmp-server enable traps ospf retransmit
+snmp-server enable traps ospf lsa
+snmp-server enable traps ospf cisco-specific state-change nssa-trans-change
+snmp-server enable traps ospf cisco-specific state-change shamlink interface
+snmp-server enable traps ospf cisco-specific state-change shamlink neighbor
+snmp-server enable traps ospf cisco-specific errors
+snmp-server enable traps ospf cisco-specific retransmit
+snmp-server enable traps ospf cisco-specific lsa
+snmp-server enable traps license
+snmp-server enable traps smart-license
+snmp-server enable traps cef resource-failure peer-state-change peer-fib-state-change inconsistency
+snmp-server enable traps memory bufferpeak
+snmp-server enable traps config-copy
+snmp-server enable traps config
+snmp-server enable traps config-ctid
+snmp-server enable traps fru-ctrl
+snmp-server enable traps entity
+snmp-server enable traps event-manager
+snmp-server enable traps frame-relay
+snmp-server enable traps frame-relay subif
+snmp-server enable traps hsrp
+snmp-server enable traps ip local pool
+snmp-server enable traps pppoe
+snmp-server enable traps cpu threshold
+snmp-server enable traps syslog
+snmp-server enable traps l2tun session
+snmp-server enable traps l2tun pseudowire status
+snmp-server enable traps atm subif
+snmp-server enable traps pki
+snmp-server enable traps ethernet evc status create delete
+snmp-server enable traps ether-oam
+snmp-server enable traps ethernet cfm cc mep-up mep-down cross-connect loop config
+snmp-server enable traps ethernet cfm crosscheck mep-missing mep-unknown service-up
+snmp-server enable traps entity-state
+snmp-server enable traps entity-qfp mem-res-thresh throughput-notif
+snmp-server enable traps adslline
+snmp-server enable traps vdsl2line
+snmp-server enable traps flash insertion removal lowspace
+snmp-server enable traps srp
+snmp-server enable traps entity-diag boot-up-fail hm-test-recover hm-thresh-reached scheduled-test-fail
+snmp-server enable traps isdn call-information
+snmp-server enable traps isdn layer2
+snmp-server enable traps isdn chan-not-avail
+snmp-server enable traps isdn ietf
+snmp-server enable traps cnpd
+snmp-server enable traps bfd
+snmp-server enable traps ipsla
+snmp-server enable traps stpx inconsistency root-inconsistency loop-inconsistency
+snmp-server enable traps c3g
+snmp-server enable traps LTE
+snmp-server enable traps vtp
+snmp-server enable traps vlancreate
+snmp-server enable traps vlandelete
+snmp-server enable traps firewall serverstatus
+snmp-server enable traps trustsec-sxp conn-srcaddr-err msg-parse-err conn-config-err binding-err conn-up conn-down binding-expn-fail oper-nodeid-change binding-conflict
+snmp-server enable traps aaa_server
+snmp-server enable traps dhcp
+snmp-server enable traps auth-framework sec-violation
+snmp-server enable traps rsvp
+snmp-server enable traps ipmulticast
+snmp-server enable traps msdp
+snmp-server enable traps pim neighbor-change rp-mapping-change invalid-pim-message
+snmp-server enable traps mvpn
+snmp-server enable traps pimstdmib neighbor-loss invalid-register invalid-join-prune rp-mapping-change interface-election
+snmp-server enable traps isis
+snmp-server enable traps bgp
+snmp-server enable traps bgp cbgp2
+snmp-server enable traps ospfv3 state-change
+snmp-server enable traps ospfv3 errors
+snmp-server enable traps nhrp nhs
+snmp-server enable traps nhrp nhc
+snmp-server enable traps nhrp nhp
+snmp-server enable traps nhrp quota-exceeded
+snmp-server enable traps ike policy add
+snmp-server enable traps ike policy delete
+snmp-server enable traps ike tunnel start
+snmp-server enable traps ike tunnel stop
+snmp-server enable traps ipsec cryptomap add
+snmp-server enable traps ipsec cryptomap delete
+snmp-server enable traps ipsec cryptomap attach
+snmp-server enable traps ipsec cryptomap detach
+snmp-server enable traps ipsec tunnel start
+snmp-server enable traps ipsec tunnel stop
+snmp-server enable traps ipsec too-many-sas
+snmp-server enable traps gdoi gm-start-registration
+snmp-server enable traps gdoi gm-registration-complete
+snmp-server enable traps gdoi gm-re-register
+snmp-server enable traps gdoi gm-rekey-rcvd
+snmp-server enable traps gdoi gm-rekey-fail
+snmp-server enable traps gdoi ks-rekey-pushed
+snmp-server enable traps gdoi gm-incomplete-cfg
+snmp-server enable traps gdoi ks-no-rsa-keys
+snmp-server enable traps gdoi ks-new-registration
+snmp-server enable traps gdoi ks-reg-complete
+snmp-server enable traps gdoi ks-role-change
+snmp-server enable traps gdoi ks-gm-deleted
+snmp-server enable traps gdoi ks-peer-reachable
+snmp-server enable traps gdoi ks-peer-unreachable
+snmp-server enable traps bulkstat collection transfer
+snmp-server enable traps alarms informational
+snmp-server enable traps ethernet cfm alarm
+snmp-server enable traps rf
+snmp-server enable traps transceiver all
+snmp-server enable traps vrfmib vrf-up vrf-down vnet-trunk-up vnet-trunk-down
+snmp-server host 10.22.69.200 version 2c snmpiscool
+!
+!
+control-plane
+!
+!
+line con 0
+ password enterprise
+ logging synchronous
+ transport input none
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ password enterprise
+ login
+!
+ntp server 10.22.71.2
+wsma agent exec
+!
+wsma agent config
+!
+wsma agent filesys
+!
+wsma agent notify
+!
+!
+end

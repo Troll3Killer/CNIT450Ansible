@@ -1,0 +1,38 @@
+hostname na-ansible-r3
+enable secret enterprise
+ipv6 unicast-routing
+!
+!
+router eigrp NA-EIGRP
+ !
+ address-family ipv4 unicast autonomous-system 65510
+  !
+  topology base
+  exit-af-topology
+  network 10.22.0.0 0.0.255.255
+  eigrp router-id 13.3.3.3
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 65510
+  !
+  topology base
+  exit-af-topology
+  eigrp router-id 13.3.3.3
+ exit-address-family
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ secret enterprise
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ secret enterprise
+ login
+!
+!
+snmp-server community snmpiscool RO
+snmp-server host 10.22.69.200 version 2c snmpiscool
+snmp-server enable traps
+!

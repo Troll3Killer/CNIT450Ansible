@@ -123,9 +123,9 @@ d2_ip_address:
       router_id: 16.6.6.6
 
 r1_ip_address:
-  g0_0:
-    ipv6_address: 2001:db8::0310:0:2/126
-  g0_1:
+  g0_0_0:
+    ipv6_address: 2001:db8::310:0:2/126
+  g0_0_1:
     ip_address: 10.22.85.1
     ipv6_address: 2001:db8:0:0:00ff:85::1/96
     subnet_mask: 255.255.255.0
@@ -134,11 +134,18 @@ r1_ip_address:
       router_id: 11.1.1.1
     ipv6:
       router_id: 11.1.1.1
+  bgp:
+    ipv4:
+      router_id: 11.1.1.1
+    ipv6:
+      neighbor: 2001:db8::310:0:2
+      network: 2001:db8::310:0:0/126
+      router_id: 11.1.1.1
 
 r2_ip_address:
-  g0_0:
-    ipv6_address: 2001:db8::0311:0:2/126
-  g0_1:
+  g0_0_0:
+    ipv6_address: 2001:db8::311:0:2/126
+  g0_0_1:
     ip_address: 10.22.86.1
     ipv6_address: 2001:db8:0:0:00ff:86::1/96
     subnet_mask: 255.255.255.0
@@ -147,13 +154,20 @@ r2_ip_address:
       router_id: 12.2.2.2
     ipv6:
       router_id: 12.2.2.2
+  bgp:
+    ipv4:
+      router_id: 12.2.2.2
+    ipv6:
+      neighbor: 2001:db8::311:0:1
+      network: 2001:db8::311:0:0/126
+      router_id: 12.2.2.2
 
 r3_ip_address:
   s0_0_0:
     ip_address: 10.22.88.1
     ipv6_address: 2001:db8:0:0:00ff:88::1/96
     subnet_mask: 255.255.255.0
-  g0_0:
+  g0_0_0:
     ip_address: 10.22.91.1
     subnet_mask: 255.255.255.0
   tunnel1:

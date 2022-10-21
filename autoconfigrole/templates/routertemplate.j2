@@ -1,0 +1,74 @@
+hostname {{ hostname }}
+enable secret enterprise
+ipv6 unicast-routing
+!
+{% if 'r1' in hostname or 'r2' in hostname or 'r3 in hostname %}
+interface GigabitEthernet0/0/0
+ no ip address
+ negotiation auto
+ ipv6 address {{ vars[short_hostname+'_ip_address'].g0_0_0.ipv6_address }}
+!
+{% endif %}
+!
+{% if 'r1' in hostname or 'r2' in hostname %}
+interface GigabitEthernet0/0/1
+ ip address {{ vars[short_hostname+'_ip_address'].g0_0_1.ip_address }} {{ vars[short_hostname+'_ip_address'].g0_0_1.subnet_mask }}
+ negotiation auto
+ ipv6 address {{ vars[short_hostname+'_ip_address'].g0_0_1.ipv6_address }}
+!
+{% endif %}
+{% if 'r3' in hostname or 'r4' in hostname %}
+interface s0/0/0
+ no shut
+ ip add {{ vars[short_hostname+'_ip_address'].s0_0_0.ip_address }} {{ vars[short_hostname+'_ip_address'].s0_0_0.subnet_mask }}
+ ipv6 add {{ vars[short_hostname+'_ip_address'].s0_0_0.ipv6_address }}
+ exit
+{% endif %}
+!
+router eigrp NA-EIGRP
+ !
+ address-family ipv4 unicast autonomous-system 65510
+  !
+  topology base
+  exit-af-topology
+  network 10.22.0.0 0.0.255.255
+  eigrp router-id {{ vars[short_hostname+'_ip_address'].eigrp.ipv4.router_id }}
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 65510
+  !
+  topology base
+  exit-af-topology
+  eigrp router-id {{ vars[short_hostname+'_ip_address'].eigrp.ipv6.router_id }}
+ exit-address-family
+!
+{% if 'r1' in hostname or 'r2' in hostname %}
+router bgp 65510
+ bgp router-id {{ vars[short_hostname+'_ip_address'].bgp.ipv6.router_id }}
+ bgp log-neighbor-changes
+ neighbor {{ vars[short_hostname+'_ip_address'].bgp.ipv6.neighbor }} remote-as 64512
+ !
+ address-family ipv6
+  network {{ vars[short_hostname+'_ip_address'].bgp.ipv6.network }}
+  neighbor {{ vars[short_hostname+'_ip_address'].bgp.ipv6.neighbor }} activate
+ exit-address-family
+!
+!ADD IPV4, DEFAULT ROUTE, AND REDISTRIBUTE LATER
+!
+{% endif %}
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ secret enterprise
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ secret enterprise
+ login
+!
+!
+snmp-server community snmpiscool RO
+snmp-server host 10.22.69.200 version 2c snmpiscool
+snmp-server enable traps
+!
