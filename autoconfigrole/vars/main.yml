@@ -50,20 +50,19 @@ d1_ip_address:
     ip_address: 10.22.85.2
     ipv6_address: 2001:db8:0:0:00ff:85::2/96
     subnet_mask: 255.255.255.0
+  g1_0_4:
+    ip_address: 10.22.86.2
+    ipv6_address: 2001:db8:0:0:00ff:86::2/96
+    subnet_mask: 255.255.255.0
   g1_0_5:
     ip_address: 10.22.87.2
     ipv6_address: 2001:db8:0:0:00ff:87::2/96
-    subnet_mask: 255.255.255.0
-  g1_0_2:
-    ip_address: 10.22.90.1
-    ipv6_address: 2001:db8:0:0:00ff:90::1/96
     subnet_mask: 255.255.255.0
   eigrp:
     ipv4:
       router_id: 15.5.5.5
     ipv6:
       router_id: 15.5.5.5
-
 
 d2_ip_address:
   vlan_99:
@@ -169,6 +168,7 @@ r3_ip_address:
     subnet_mask: 255.255.255.0
   g0_0_0:
     ip_address: 10.22.91.1
+    ipv6_address: 2001:db8:0:0:00ff:91::1/96
     subnet_mask: 255.255.255.0
   tunnel1:
     ip_address: 10.22.89.1
@@ -189,7 +189,7 @@ r4_ip_address:
     ipv6_address: 2001:db8:0:0:00ff:88::2/96
     subnet_mask: 255.255.255.0
   tunnel1:
-    ip_addg1_0_2ress: 10.22.89.2
+    ip_address: 10.22.89.2
     ipv6_address: 2001:db8:0:0:00ff:89::2/96
     subnet_mask: 255.255.255.0
   eigrp:
@@ -226,6 +226,36 @@ s1_ip_address:
   vlan_7:
     ip_address: 10.22.84.7
     ipv6_address: 2001:db8:0:0:00ff:84::7/96
+    subnet_mask: 255.255.255.0
+
+s1_ip_address:
+  vlan_99:
+    ip_address: 10.22.78.8
+    ipv6_address: 2001:db8:0:0:00ff:78::78/96
+    subnet_mask: 255.255.255.0
+  vlan_2:
+    ip_address: 10.22.79.8
+    ipv6_address: 2001:db8:0:0:00ff:79::8/96
+    subnet_mask: 255.255.255.0
+  vlan_3:
+    ip_address: 10.22.80.8
+    ipv6_address: 2001:db8:0:0:00ff:80::8/96
+    subnet_mask: 255.255.255.0
+  vlan_4:
+    ip_address: 10.22.81.8
+    ipv6_address: 2001:db8:0:0:00ff:81::8/96
+    subnet_mask: 255.255.255.0
+  vlan_5:
+    ip_address: 10.22.82.8
+    ipv6_address: 2001:db8:0:0:00ff:82::8/96
+    subnet_mask: 255.255.255.0
+  vlan_6:
+    ip_address: 10.22.83.8
+    ipv6_address: 2001:db8:0:0:00ff:83::8/96
+    subnet_mask: 255.255.255.0
+  vlan_7:
+    ip_address: 10.22.84.8
+    ipv6_address: 2001:db8:0:0:00ff:84::8/96
     subnet_mask: 255.255.255.0
 
 #vlan priority

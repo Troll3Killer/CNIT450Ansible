@@ -28,6 +28,8 @@ no aaa new-model
 !
 user admin secret scrypt password
 !
+ip ssh version 2
+ip domain name 450-001.net
 !
 !
 !
@@ -257,16 +259,19 @@ ip http secure-server
 banner motd ^CCCNo Unathorized Users!^C
 !
 line con 0
-  password 7 02030A4F0E141F33455D0C
+ secret enterprise
  logging synchronous
  login
  stopbits 1
 line aux 0
  stopbits 1
 line vty 0 4
- password 7 00011D1201491B14063249
+ secret enterprise
+ transport input ssh
  login
 line vty 5 15
+ secret enterprise
+ transport input ssh
  login
 !
 
@@ -294,4 +299,3 @@ snmp-server community snmpiscool RO
 snmp-server host 10.22.69.200 version 2c snmpiscool
 snmp-server enable traps
 
-end

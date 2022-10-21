@@ -104,7 +104,7 @@ interface Vlan5
 interface Vlan6
  description Guest
  ip address 10.22.83.7 255.255.255.0
- ipv6 address 2001:DB8::FF:830:7/96
+ ipv6 address 2001:DB8::FF:83:0:7/96
 !
 interface Vlan7
  description Voice

@@ -28,6 +28,8 @@ no aaa new-model
 !
 user admin secret scrypt password
 !
+ip ssh version 2
+ip domain name 450-001.net
 !
 !
 !
@@ -64,30 +66,33 @@ ip address {{ vars[short_hostname+'_ip_address'].g1_0_1.ip_address }} {{ vars[sh
 ipv6 address {{ vars[short_hostname+'_ip_address'].g1_0_1.ipv6_address }}
 !
 interface GigabitEthernet1/0/2
-no switchport
-ip address {{ vars[short_hostname+'_ip_address'].g1_0_2.ip_address }} {{ vars[short_hostname+'_ip_address'].g1_0_2.subnet_mask }}
-ipv6 address {{ vars[short_hostname+'_ip_address'].g1_0_2.ipv6_address }}
+switchport mode trunk
 !
 interface GigabitEthernet1/0/3
 switchport mode trunk
 !
 interface GigabitEthernet1/0/4
-switchport mode trunk
-!
-{% if 'd1' in hostname %}
+no switchport
+ip address {{ vars[short_hostname+'_ip_address'].g1_0_4.ip_address }} {{ vars[short_hostname+'_ip_address'].g1_0_4.subnet_mask }}
+ipv6 address {{ vars[short_hostname+'_ip_address'].g1_0_4.ipv6_address }}
 !
 interface GigabitEthernet1/0/5
 no switchport
 ip address {{ vars[short_hostname+'_ip_address'].g1_0_5.ip_address }} {{ vars[short_hostname+'_ip_address'].g1_0_5.subnet_mask }}
 ipv6 address {{ vars[short_hostname+'_ip_address'].g1_0_5.ipv6_address }}
 !
+interface GigabitEthernet1/0/6
+switchport mode trunk
+!
+interface GigabitEthernet1/0/7
+switchport mode trunk
+!
 interface GigabitEthernet1/0/24
 !
 description AnsiblePC
 switchport mode access
-switchport access vlan 5
+switchport access vlan 99
 no shut
-{% endif %}
 !
 !
 !
@@ -291,8 +296,11 @@ line aux 0
  stopbits 1
 line vty 0 4
  secret enterprise
+ transport input ssh
  login
 line vty 5 15
+ secret enterprise
+ transport input ssh
  login
 !
 
@@ -320,4 +328,3 @@ snmp-server community snmpiscool RO
 snmp-server host 10.22.69.200 version 2c snmpiscool
 snmp-server enable traps
 
-end

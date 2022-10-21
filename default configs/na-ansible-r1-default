@@ -1,6 +1,6 @@
 enable
 conf t
-hostname na-ansible-d1
+hostname na-ansible-r1
 ip ssh version 2
 ip domain name 450-001.net
 crypto key generate rsa modulus 2048
@@ -10,14 +10,7 @@ line vty 0 4
 transport input ssh
 login local
 exit
-vlan 99
-exit
-int vlan 99
-ip add 10.22.78.5 255.255.255.0
-no shut
-exit
-int g1/0/24
-switchport mode access
-switchport access vlan 99
+int g0/0/1
+ip add 10.22.85.1 255.255.255.0
 no shut
 exit

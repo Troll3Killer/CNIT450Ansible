@@ -6,15 +6,6 @@ ip routing
 ipv6 uni
 enable secret enterprise
 
-line con 0
-pass enterprise
-login
-exit
-
-line vty 0 15
-pass enterprise
-login
-exit
 
 inter s0/1/0
 no shut
@@ -68,3 +59,13 @@ ip address 10.22.75.1 255.255.255.0
 ip mtu 1400
 tunnel source 10.22.74.1
 tunnel destination 10.22.74.2
+
+line con 0
+pass enterprise
+login
+exit
+
+line vty 0 15
+pass enterprise
+login
+exit

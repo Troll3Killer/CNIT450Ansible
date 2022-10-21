@@ -1,6 +1,22 @@
 hostname na-ansible-r4
 enable secret enterprise
 ipv6 unicast-routing
+user admin secret scrypt password
+ip ssh version 2
+ip domain name 450-001.net
+!
+!
+!
+interface s0/0/0
+ no shut
+ ip add 10.22.88.2 255.255.255.0
+ ipv6 add 2001:db8:0:0:00ff:88::2/96
+ exit
+!
+interface GigabitEthernet0/1
+ ip address 10.22.88.2 255.255.255.0
+ ipv6 add 2001:db8:0:0:00ff:88::2/96
+ no shut
 !
 !
 router eigrp NA-EIGRP
@@ -20,6 +36,39 @@ router eigrp NA-EIGRP
   eigrp router-id 14.4.4.4
  exit-address-family
 !
+crypto isakmp enable
+crypto isakmp policy 1
+encryption aes 256
+hash sha256
+authentication pre-share
+group 24
+lifetime 3600
+exit
+crypto isakmp key enterprise address 10.22.88.1
+crypto ipsec transform-set IPSECTUNNELTS esp-aes 256 esp-sha256-hmac
+mode transport
+exit
+
+ip access-list extended IPSECACL
+permit ip any 10.22.76.0 0.0.0.255
+exit
+
+crypto map IPSECTUNNELCM 10 ipsec-isakmp
+match address IPSECACL
+set peer 10.22.88.1
+set pfs group24
+set transform-set IPSECTUNNELTS
+exit
+
+interface s0/0/0
+crypto map IPSECTUNNELCM
+
+interface tunnel 1
+ip address 10.22.89.2 255.255.255.0
+ip mtu 1400
+tunnel source 10.22.88.2
+tunnel destination 10.22.88.1
+!
 line con 0
  exec-timeout 0 0
  logging synchronous
@@ -29,6 +78,7 @@ line aux 0
  stopbits 1
 line vty 0 4
  secret enterprise
+ transport input ssh
  login
 !
 !

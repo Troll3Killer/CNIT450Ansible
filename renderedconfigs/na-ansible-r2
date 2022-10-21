@@ -1,16 +1,22 @@
 hostname na-ansible-r2
 enable secret enterprise
 ipv6 unicast-routing
+user admin secret scrypt password
+ip ssh version 2
+ip domain name 450-001.net
 !
 interface GigabitEthernet0/0/0
  no ip address
  negotiation auto
  ipv6 address 2001:db8::311:0:2/126
 !
+!
+!
 interface GigabitEthernet0/0/1
  ip address 10.22.86.1 255.255.255.0
  negotiation auto
  ipv6 address 2001:db8:0:0:00ff:86::1/96
+!
 !
 !
 router eigrp NA-EIGRP
@@ -51,6 +57,7 @@ line aux 0
  stopbits 1
 line vty 0 4
  secret enterprise
+ transport input ssh
  login
 !
 !

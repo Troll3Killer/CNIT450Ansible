@@ -5,16 +5,6 @@ ip routing
 ipv6 unicast-routing
 enable secret enterprise
 
-line con 0
-logging sync
-pass enterprise
-login
-exit
-
-line vty 0 15
-pass enterprise
-login
-exit
 
 inter s0/0/0
 no shut
@@ -78,29 +68,15 @@ tunnel source 10.22.74.2
 tunnel destination 10.22.74.1
 
 
+line con 0
+logging sync
+pass enterprise
+login
+exit
 
-access-list 100 permit udp any any range 16384 32000
-access-list 100 permit tcp any any eq 1720
-access-list 101 permit tcp any any eq 22
-access-list 102 permit tcp any any eq 80
-access-list 102 permit tcp any any eq 443
-!
-class-map voip 
- match access-group 100
-class-map data1
- match access-group 101
-class-map data2 
- match access-group 102
-!
-policy-map llq 
- class voip 
-  priority 32 
- class data1 
-  bandwidth 64 
- class data2 
-  bandwidth 32 
- class class-default 
-  fair-queue
+line vty 0 15
+pass enterprise
+login
 exit
 
 snmp-server community snmpiscool RO

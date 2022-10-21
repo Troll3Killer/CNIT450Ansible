@@ -1,0 +1,81 @@
+hostname {{ hostname }}
+!
+!
+enable password enterprise
+!
+user admin secret scrypt password
+ip ssh version 2
+ip domain name 450-001.net
+!
+interface FastEthernet0/3
+ switchport mode trunk
+!
+interface FastEthernet0/4
+ switchport mode trunk
+!
+interface Vlan2
+ ip address {{ vars[short_hostname+'_ip_address'].vlan_2.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_2.subnet_mask }}
+ ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_2.ipv6_address }}
+!
+interface Vlan3
+ ip address {{ vars[short_hostname+'_ip_address'].vlan_3.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_3.subnet_mask }}
+ ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_3.ipv6_address }}
+!
+interface Vlan4
+ ip address {{ vars[short_hostname+'_ip_address'].vlan_4.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_4.subnet_mask }}
+ ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_4.ipv6_address }}
+!
+interface Vlan5
+ ip address {{ vars[short_hostname+'_ip_address'].vlan_5.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_5.subnet_mask }}
+ ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_5.ipv6_address }}
+!
+interface Vlan6
+ ip address {{ vars[short_hostname+'_ip_address'].vlan_6.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_6.subnet_mask }}
+ ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_6.ipv6_address }}
+!
+interface Vlan7
+ ip address {{ vars[short_hostname+'_ip_address'].vlan_7.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_7.subnet_mask }}
+ ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_7.ipv6_address }}
+!
+interface Vlan99
+ ip address {{ vars[short_hostname+'_ip_address'].vlan_99.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_99.subnet_mask }}
+ ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_99.ipv6_address }}
+!
+!
+!
+line con 0
+ secret enterprise
+ logging synchronous
+ login
+line vty 0 4
+ secret enterprise
+ transport input ssh
+ login
+line vty 5 15
+ secret enterprise
+ transport input ssh
+ login
+!
+vlan 2
+name HR
+vlan 3
+name Finance
+vlan 4
+name Executive
+vlan 5
+name User
+vlan 6 
+name Guest
+vlan 7
+name Voice
+vlan 99
+name Management
+!
+vtp domain CNITfa22
+vtp version 3
+vtp mode server
+vtp password cnit450
+!
+snmp-server community snmpiscool RO
+snmp-server host 10.22.69.200 version 2c snmpiscool
+snmp-server enable traps
