@@ -1,0 +1,5 @@
+---
+- name: Render template
+  template:
+    src: templates/{{ template }}
+    dest: renderedconfigs/{{ hostname }}

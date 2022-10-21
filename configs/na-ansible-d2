@@ -1,0 +1,196 @@
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname na-pod2-d2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-vrf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 5 $1$OIsU$kV3msRaxpD5UVBq10x.9D0
+!
+no aaa new-model
+switch 1 provision ws-c3650-24ps
+!
+!
+!
+!
+!
+user admin secret scrypt password
+!
+!
+!
+!
+ip routing
+!
+no ip domain-lookup
+!
+!
+login on-success log
+ipv6 unicast-routing
+qos queue-softmax-multiplier 100
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 2,4,6 priority 24576
+hw-switch switch 1 logging onboard message level 3
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+router eigrp NA-EIGRP
+ !
+ address-family ipv4 unicast autonomous-system 65510
+  !
+  af-interface Vlan2
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan3
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan4
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan5
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan6
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan7
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan99
+   passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  network 10.22.78.0 0.0.0.255
+  network 10.22.79.0 0.0.0.255
+  network 10.22.80.0 0.0.0.255
+  network 10.22.81.0 0.0.0.255
+  network 10.22.82.0 0.0.0.255
+  network 10.22.83.0 0.0.0.255
+  network 10.22.84.0 0.0.0.255
+  network 10.22.86.0 0.0.0.255
+  network 10.22.90.0 0.0.0.255
+  eigrp router-id 16.6.6.6
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 65510
+  !
+  af-interface Vlan2
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan3
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan4
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan5
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan6
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan7
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan99
+   passive-interface
+  exit-af-interface
+  !
+  topology base
+   variance 2
+  exit-af-topology
+  eigrp router-id 16.6.6.6
+ exit-address-family
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+!
+!
+!
+!
+banner motd ^CCCNo Unathorized Users!^C
+!
+line con 0
+ password 7 02030A4F0E141F33455D0C
+ logging synchronous
+ login
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ password 7 00011D1201491B14063249
+ login
+line vty 5 15
+ login
+!
+ntp server 10.22.71.2
+
+vlan 2
+name HR
+vlan 3
+name Finance
+vlan 4
+name Executive
+vlan 5
+name User
+vlan 6 
+name Guest
+vlan 7
+name Voice
+vlan 99
+name Management
+
+vtp domain CNITfa22
+vtp version 3
+vtp mode server
+vtp password cnit450
+
+snmp-server community snmpiscool RO
+snmp-server host 10.22.69.200 version 2c snmpiscool
+snmp-server enable traps
+
+end

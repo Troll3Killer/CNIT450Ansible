@@ -1,0 +1,24 @@
+enable
+conf t
+hostname na-ansible-d1
+ip ssh version 2
+ip domain name 450-001.net
+crypto key generate rsa modulus 2048
+user admin secret scrypt password
+enable secret enpassword
+line vty 0 4
+transport input ssh
+login local
+exit
+vlan 5
+name User
+exit
+int vlan 5
+ip add 10.22.82.5 255.255.255.0
+no shut
+exit
+int g1/0/24
+switchport mode access
+switchport access vlan 5
+no shut
+exit

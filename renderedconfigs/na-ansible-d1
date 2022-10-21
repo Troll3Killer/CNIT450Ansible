@@ -1,0 +1,297 @@
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname na-ansible-d1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-vrf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 5 $1$OIsU$kV3msRaxpD5UVBq10x.9D0
+!
+no aaa new-model
+!
+!
+!
+!
+user admin secret scrypt password
+!
+!
+!
+!
+ip routing
+!
+no ip domain-lookup
+!
+!
+login on-success log
+ipv6 unicast-routing
+qos queue-softmax-multiplier 100
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 3,5,7,99 priority 24576
+hw-switch switch 1 logging onboard message level 3
+!
+!
+!
+!
+interface GigabitEthernet0/0
+vrf forwarding Mgmt-vrf
+no ip address
+shut
+negotiation auto
+!
+interface GigabitEthernet1/0/1
+no switchport
+ip address 10.22.85.2 255.255.255.0
+ipv6 address 2001:db8:0:0:00ff:85::2/96
+!
+interface GigabitEthernet1/0/2
+no switchport
+ip address 10.22.90.1 255.255.255.0
+ipv6 address 2001:db8:0:0:00ff:90::1/96
+!
+interface GigabitEthernet1/0/3
+switchport mode trunk
+!
+interface GigabitEthernet1/0/4
+switchport mode trunk
+!
+!
+interface GigabitEthernet1/0/5
+no switchport
+ip address 10.22.87.2 255.255.255.0
+ipv6 address 2001:db8:0:0:00ff:87::2/96
+!
+interface GigabitEthernet1/0/24
+!
+description AnsiblePC
+switchport mode access
+switchport access vlan 5
+no shut
+!
+!
+!
+!
+!
+!
+!
+interface Vlan1
+no ip address
+shutdown
+!
+interface Vlan2
+ip address 10.22.79.5 255.255.255.0
+standby version 2
+standby 1 ip 10.22.79.1
+standby 1 preempt
+standby 2 ipv6 2001:db8:0:0:00ff:79::1/96
+standby 2 preempt
+ipv6 address 2001:DB8::FF:79:0:5/96
+!
+interface Vlan3
+ip address 10.22.80.5 255.255.255.0
+standby version 2
+standby 1 ip 10.22.80.1
+standby 1 priority 110
+standby 2 priority 110
+standby 1 preempt
+standby 2 ipv6 2001:db8:0:0:00ff:80::1/96
+standby 2 preempt
+ipv6 address 2001:db8:0:0:00ff:80::5/96
+!
+interface Vlan4
+ip address 10.22.81.5 255.255.255.0
+standby version 2
+standby 1 ip 10.22.81.1
+standby 1 preempt
+standby 2 ipv6 2001:db8:0:0:00ff:81::1/96
+standby 2 preempt
+ipv6 address 2001:db8:0:0:00ff:81::5/96
+!
+interface Vlan5
+ip address 10.22.82.5 255.255.255.0
+standby version 2
+standby 1 ip 10.22.82.1
+standby 1 priority 110
+standby 2 priority 110
+standby 1 preempt
+standby 2 ipv6 2001:db8:0:0:00ff:82::1/96
+standby 2 preempt
+ipv6 address 2001:db8:0:0:00ff:82::5/96
+!
+interface Vlan6
+ip address 10.22.83.5 255.255.255.0
+standby version 2
+standby 1 ip 10.22.83.1
+standby 1 preempt
+standby 2 ipv6 2001:db8:0:0:00ff:83::1/96
+standby 2 preempt
+ipv6 address 2001:db8:0:0:00ff:83::5/96
+!
+interface Vlan7
+ip address 10.22.84.5 255.255.255.0
+standby version 2
+standby 1 ip 10.22.84.1
+standby 1 priority 110
+standby 2 priority 110
+standby 1 preempt
+standby 2 ipv6 2001:db8:0:0:00ff:84::1/96
+standby 2 preempt
+ipv6 address 2001:db8:0:0:00ff:84::5/96
+!
+interface Vlan99
+ip address 10.22.78.5 255.255.255.0
+standby version 2
+standby 1 ip 10.22.78.1
+standby 1 priority 110
+standby 2 priority 110
+standby 1 preempt
+standby 2 ipv6 2001:db8:0:0:00ff:78::1/96
+standby 2 preempt
+ipv6 address 2001:db8:0:0:00ff:78::5/96
+!
+!
+!
+!
+!
+!
+!
+!
+!
+router eigrp NA-EIGRP
+ !
+ address-family ipv4 unicast autonomous-system 65510
+  !
+  af-interface Vlan2
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan3
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan4
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan5
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan6
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan7
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan99
+   passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  network 10.22.0.0 0.0.255.255
+  eigrp router-id 15.5.5.5
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 65510
+  !
+  af-interface Vlan2
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan3
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan4
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan5
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan6
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan7
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Vlan99
+   passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  eigrp router-id 15.5.5.5
+ exit-address-family
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+!
+!
+!
+!
+banner motd ^CCCNo Unathorized Users!^C
+!
+line con 0
+  password 7 02030A4F0E141F33455D0C
+ logging synchronous
+ login
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ password 7 00011D1201491B14063249
+ login
+line vty 5 15
+ login
+!
+
+vlan 2
+name HR
+vlan 3
+name Finance
+vlan 4
+name Executive
+vlan 5
+name User
+vlan 6 
+name Guest
+vlan 7
+name Voice
+vlan 99
+name Management
+
+vtp domain CNITfa22
+vtp version 3
+vtp mode server
+vtp password cnit450
+
+snmp-server community snmpiscool RO
+snmp-server host 10.22.69.200 version 2c snmpiscool
+snmp-server enable traps
+
+end

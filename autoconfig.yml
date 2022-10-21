@@ -1,0 +1,49 @@
+---
+- name: Autoconfigure Network
+  hosts: all
+  serial: 1
+  become: yes
+  become_method: enable
+  connection: network_cli
+  gather_facts: no
+  vars:
+    ansible_user: admin
+    ansible_password: password
+    ansible_secret: enpassword
+    tlee_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30336337326661373939356434303533326136623437623461353738313934303836373932633865
+          3763373034333833323863353633303566653831663834390a386362323732306632666430626165
+          31366430376434383835633638303839303964363436636630383836623733396231653261386133
+          3730383734356363640a656366336233373862333637303435613961353832323362373238363337
+          6139
+
+  tasks:
+  - name: Deploy Configuration File
+    ios_command:
+      commands: 'copy scp: startup-config'
+      check_all: True
+      prompt:
+        - 'Address or name of remote host \[\]\?'
+        - 'Source username \[SSH\]\?'
+        - 'Source filename \[\]\?'
+        - 'Destination filename \[startup-config\]\?'
+        - 'Password:'
+      answer:
+        - '10.22.82.10'
+        - 'tlee'
+        - '/home/tlee/Documents/CNIT\ 450/Ansible/configs/{{ hostname }}'
+        - '\r'
+        - '{{ tlee_password }}'
+
+  - name: Reboot Device
+    ios_command:
+      commands: 'reload'
+      prompt:
+        - 'Proceed with reload? \[confirm\]'
+      answer:
+        - '\r'
+
+  - name: Wait for Reboot
+    wait_for_connection:
+      delay: 10

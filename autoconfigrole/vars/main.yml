@@ -1,0 +1,219 @@
+---
+ansible_network_os: ios
+
+short_hostname: "{{ hostname | regex_search('..$') }}"
+
+d1_ip_address:
+  vlan_99:
+    ip_address: 10.22.78.5
+    ipv6_address: 2001:db8:0:0:00ff:78::5/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.78.1
+    hsrpv6_address: 2001:db8:0:0:00ff:78::1/96
+  vlan_2:
+    ip_address: 10.22.79.5
+    ipv6_address: 2001:DB8::FF:79:0:5/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.79.1
+    hsrpv6_address: 2001:db8:0:0:00ff:79::1/96
+  vlan_3:
+    ip_address: 10.22.80.5
+    ipv6_address: 2001:db8:0:0:00ff:80::5/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.80.1
+    hsrpv6_address: 2001:db8:0:0:00ff:80::1/96
+  vlan_4:
+    ip_address: 10.22.81.5
+    ipv6_address: 2001:db8:0:0:00ff:81::5/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.81.1
+    hsrpv6_address: 2001:db8:0:0:00ff:81::1/96
+  vlan_5:
+    ip_address: 10.22.82.5
+    ipv6_address: 2001:db8:0:0:00ff:82::5/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.82.1
+    hsrpv6_address: 2001:db8:0:0:00ff:82::1/96
+  vlan_6:
+    ip_address: 10.22.83.5
+    ipv6_address: 2001:db8:0:0:00ff:83::5/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.83.1
+    hsrpv6_address: 2001:db8:0:0:00ff:83::1/96
+  vlan_7:
+    ip_address: 10.22.84.5
+    ipv6_address: 2001:db8:0:0:00ff:84::5/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.84.1
+    hsrpv6_address: 2001:db8:0:0:00ff:84::1/96
+  g1_0_1:
+    ip_address: 10.22.85.2
+    ipv6_address: 2001:db8:0:0:00ff:85::2/96
+    subnet_mask: 255.255.255.0
+  g1_0_5:
+    ip_address: 10.22.87.2
+    ipv6_address: 2001:db8:0:0:00ff:87::2/96
+    subnet_mask: 255.255.255.0
+  g1_0_2:
+    ip_address: 10.22.90.1
+    ipv6_address: 2001:db8:0:0:00ff:90::1/96
+    subnet_mask: 255.255.255.0
+  eigrp:
+    ipv4:
+      router_id: 15.5.5.5
+    ipv6:
+      router_id: 15.5.5.5
+
+
+d2_ip_address:
+  vlan_99:
+    ip_address: 10.22.78.6
+    ipv6_address: 2001:db8:0:0:00ff:78::6/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.78.1
+    hsrpv6_address: 2001:db8:0:0:00ff:78::1/96
+  vlan_2:
+    ip_address: 10.22.79.6
+    ipv6_address: 2001:DB8::FF:79:0:6/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.79.1
+    hsrpv6_address: 2001:db8:0:0:00ff:79::1/96
+  vlan_3:
+    ip_address: 10.22.80.6
+    ipv6_address: 2001:db8:0:0:00ff:80::6/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.80.1
+    hsrpv6_address: 2001:db8:0:0:00ff:80::1/96
+  vlan_4:
+    ip_address: 10.22.81.6
+    ipv6_address: 2001:db8:0:0:00ff:81::6/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.81.1
+    hsrpv6_address: 2001:db8:0:0:00ff:81::1/96
+  vlan_5:
+    ip_address: 10.22.82.6
+    ipv6_address: 2001:db8:0:0:00ff:82::6/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.82.1
+    hsrpv6_address: 2001:db8:0:0:00ff:82::1/96
+  vlan_6:
+    ip_address: 10.22.83.6
+    ipv6_address: 2001:db8:0:0:00ff:83::6/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.83.1
+    hsrpv6_address: 2001:db8:0:0:00ff:83::1/96
+  vlan_7:
+    ip_address: 10.22.84.6
+    ipv6_address: 2001:db8:0:0:00ff:84::6/96
+    subnet_mask: 255.255.255.0
+    hsrp_address: 10.22.84.1
+    hsrpv6_address: 2001:db8:0:0:00ff:84::1/96
+  g1_0_1:
+    ip_address: 10.22.86.2
+    ipv6_address: 2001:db8:0:0:00ff:86::2/96
+    subnet_mask: 255.255.255.0
+  g1_0_2:
+    ip_address: 10.22.90.2
+    ipv6_address: 2001:db8:0:0:00ff:90::2/96
+    subnet_mask: 255.255.255.0
+  eigrp:
+    ipv4:
+      router_id: 16.6.6.6
+    ipv6:
+      router_id: 16.6.6.6
+
+r1_ip_address:
+  g0_0:
+    ipv6_address: 2001:db8::0310:0:2/126
+  g0_1:
+    ip_address: 10.22.85.1
+    ipv6_address: 2001:db8:0:0:00ff:85::1/96
+    subnet_mask: 255.255.255.0
+  eigrp:
+    ipv4:
+      router_id: 11.1.1.1
+    ipv6:
+      router_id: 11.1.1.1
+
+r2_ip_address:
+  g0_0:
+    ipv6_address: 2001:db8::0311:0:2/126
+  g0_1:
+    ip_address: 10.22.86.1
+    ipv6_address: 2001:db8:0:0:00ff:86::1/96
+    subnet_mask: 255.255.255.0
+  eigrp:
+    ipv4:
+      router_id: 12.2.2.2
+    ipv6:
+      router_id: 12.2.2.2
+
+r3_ip_address:
+  s0_0_0:
+    ip_address: 10.22.88.1
+    ipv6_address: 2001:db8:0:0:00ff:88::1/96
+    subnet_mask: 255.255.255.0
+  g0_0:
+    ip_address: 10.22.91.1
+    subnet_mask: 255.255.255.0
+  tunnel1:
+    ip_address: 10.22.89.1
+    subnet_mask: 255.255.255.0
+  eigrp:
+    ipv4:
+      router_id: 13.3.3.3
+    ipv6:
+      router_id: 13.3.3.3
+
+r4_ip_address:
+  s0_0_0:
+    ip_address: 10.22.88.2
+    ipv6_address: 2001:db8:0:0:00ff:88::2/96
+    subnet_mask: 255.255.255.0
+  g0_1:
+    ip_address: 10.22.88.2
+    ipv6_address: 2001:db8:0:0:00ff:88::2/96
+    subnet_mask: 255.255.255.0
+  tunnel1:
+    ip_addg1_0_2ress: 10.22.89.2
+    ipv6_address: 2001:db8:0:0:00ff:89::2/96
+    subnet_mask: 255.255.255.0
+  eigrp:
+    ipv4:
+      router_id: 14.4.4.4
+    ipv6:
+      router_id: 14.4.4.4
+
+s1_ip_address:
+  vlan_99:
+    ip_address: 10.22.78.7
+    ipv6_address: 2001:db8:0:0:00ff:78::7/96
+    subnet_mask: 255.255.255.0
+  vlan_2:
+    ip_address: 10.22.79.7
+    ipv6_address: 2001:db8:0:0:00ff:79::7/96
+    subnet_mask: 255.255.255.0
+  vlan_3:
+    ip_address: 10.22.80.7
+    ipv6_address: 2001:db8:0:0:00ff:80::7/96
+    subnet_mask: 255.255.255.0
+  vlan_4:
+    ip_address: 10.22.81.7
+    ipv6_address: 2001:db8:0:0:00ff:81::7/96
+    subnet_mask: 255.255.255.0
+  vlan_5:
+    ip_address: 10.22.82.7
+    ipv6_address: 2001:db8:0:0:00ff:82::7/96
+    subnet_mask: 255.255.255.0
+  vlan_6:
+    ip_address: 10.22.83.7
+    ipv6_address: 2001:db8:0:0:00ff:83::7/96
+    subnet_mask: 255.255.255.0
+  vlan_7:
+    ip_address: 10.22.84.7
+    ipv6_address: 2001:db8:0:0:00ff:84::7/96
+    subnet_mask: 255.255.255.0
+
+#vlan priority
+vlan_priority_d1: spanning-tree vlan 3,5,7,99 priority 24576
+vlan_priority_d2: spanning-tree vlan 2,4,6 priority 24576
