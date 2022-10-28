@@ -3,7 +3,7 @@
   template:
     src: templates/{{ template }}
     dest: renderedconfigs/{{ hostname }}
-    
+
 - name: Logging Sync
   ios_config: 
     lines: logging sync
@@ -45,3 +45,7 @@
     timeout: 1200
   vars:
     ansible_command_timeout: 1200
+
+- name: Reboot Device
+  ios_command:
+    commands: 'wr'
