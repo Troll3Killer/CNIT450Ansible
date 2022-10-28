@@ -1,7 +1,7 @@
 hostname na-ansible-r1
 enable secret enterprise
 ipv6 unicast-routing
-user admin secret scrypt password
+user admin algorithm-type scrypt secret password
 ip ssh version 2
 ip domain name 450-001.net
 !

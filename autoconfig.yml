@@ -1,52 +1,13 @@
 ---
 - name: Autoconfigure Network
   hosts: all
-  serial: 1
+  serial: 25
   become: yes
   become_method: enable
   connection: network_cli
   gather_facts: no
-  vars:
-    ansible_user: admin
-    ansible_password: password
-    ansible_secret: enpassword
-    scp_password: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          31643931353661333864646565303063306636643737623631333863333064356165663932313333
-          6532663031646130616236643731653835633838643732310a613666373338653230356237326363
-          38653238323739356530643831393736333364626131363936346132366431363039353930373938
-          3839373833323232320a343064396637373035316462326134353565653633316463646139306534
-          6132
 
   tasks:
-  - name: Deploy Configuration File
-    ios_command:
-      commands: 'copy scp: startup-config'
-      check_all: True
-      prompt:
-        - 'Address or name of remote host \[\]\?'
-        - 'Source username \[{{ hostname }}\]\?'
-        - 'Source filename \[\]\?'
-        - 'Destination filename \[startup-config\]\?'
-        - 'Password:'
-      answer:
-        - '10.22.78.10'
-        - '{{ linux_user }}'
-        - '/home/{{ linux_user }}/CNIT450Ansible/renderedconfigs/{{ hostname }}'
-        - '\r'
-        - '{{ scp_password }}'
-
-  - name: Reboot Device
-    ios_command:
-      commands: 'reload'
-      prompt:
-        - 'Proceed with reload? \[confirm\]'
-      answer:
-        - '\r'
-
-  - name: Wait for Reboot
-    wait_for_connection:
-      delay: 10
-      timeout: 1200
-    vars:
-      ansible_command_timeout: 1200
+  - name: Import autoconfigrole
+    import_role:
+      name: autoconfigrole

@@ -3,3 +3,34 @@
   template:
     src: templates/{{ template }}
     dest: renderedconfigs/{{ hostname }}
+- name: Deploy Configuration File
+  ios_command:
+    commands: 'copy scp: startup-config'
+    check_all: True
+    prompt:
+      - 'Address or name of remote host \[\]\?'
+      - 'Source username \[{{ hostname }}\]\?'
+      - 'Source filename \[\]\?'
+      - 'Destination filename \[startup-config\]\?'
+      - 'Password:'
+    answer:
+      - '10.22.78.10'
+      - '{{ linux_user }}'
+      - '/home/{{ linux_user }}/CNIT450Ansible/renderedconfigs/{{ hostname }}'
+      - '\r'
+      - '{{ scp_password }}'
+
+- name: Reboot Device
+  ios_command:
+    commands: 'reload'
+    prompt:
+      - 'Proceed with reload? \[confirm\]'
+    answer:
+      - '\r'
+
+- name: Wait for Reboot
+  wait_for_connection:
+    delay: 10
+    timeout: 1200
+  vars:
+    ansible_command_timeout: 1200
