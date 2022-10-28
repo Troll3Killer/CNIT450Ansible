@@ -4,7 +4,7 @@ hostname na-ansible-s1
 ip ssh version 2
 ip domain name 450-001.net
 crypto key generate rsa modulus 2048
-user admin secret scrypt password
+user admin algorithm-type scrypt secret password
 enable secret enterprise
 line vty 0 4
 transport input ssh
