@@ -1,6 +1,6 @@
 ---
 ansible_network_os: ios
-
+linux_user: tlee
 short_hostname: "{{ hostname | regex_search('..$') }}"
 
 d1_ip_address:

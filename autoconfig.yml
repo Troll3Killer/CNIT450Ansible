@@ -25,14 +25,14 @@
       check_all: True
       prompt:
         - 'Address or name of remote host \[\]\?'
-        - 'Source username \[SSH\]\?'
+        - 'Source username \[{{ hostname }}\]\?'
         - 'Source filename \[\]\?'
         - 'Destination filename \[startup-config\]\?'
         - 'Password:'
       answer:
         - '10.22.82.10'
-        - 'tlee'
-        - '/home/tlee/Documents/CNIT\ 450/Ansible/configs/{{ hostname }}'
+        - '{{ linux_user }}'
+        - '/home/tlee/Documents/CNIT\ 450/Ansible/renderedconfigs/{{ hostname }}'
         - '\r'
         - '{{ tlee_password }}'
 
@@ -47,3 +47,6 @@
   - name: Wait for Reboot
     wait_for_connection:
       delay: 10
+      timeout: 1200
+    vars:
+      ansible_command_timeout: 1200
