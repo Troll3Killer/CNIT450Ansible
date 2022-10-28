@@ -1,32 +1,42 @@
 ---
-- name: Render template
-  template:
-    src: templates/{{ template }}
-    dest: renderedconfigs/{{ hostname }}
+#- name: Render template
+#  template:
+#    src: templates/{{ template }}
+#    dest: renderedconfigs/{{ hostname }}
+- name: Easy task
+  ios_config: 
+    lines: logging sync
+    parents: line vty 0 4
+
 - name: Deploy Configuration File
   ios_command:
-    commands: 'copy scp: startup-config'
-    check_all: True
-    prompt:
-      - 'Address or name of remote host \[\]\?'
-      - 'Source username \[{{ hostname }}\]\?'
-      - 'Source filename \[\]\?'
-      - 'Destination filename \[startup-config\]\?'
-      - 'Password:'
-    answer:
-      - '10.22.78.10'
-      - '{{ linux_user }}'
-      - '/home/{{ linux_user }}/CNIT450Ansible/renderedconfigs/{{ hostname }}'
-      - '\r'
-      - '{{ scp_password }}'
+    commands: 
+    - command: 'copy scp: startup-config'
+      check_all: True
+      prompt:
+        - 'Address'
+        - 'Source username'
+        - 'Source filename'
+        - 'Destination filename'
+        - 'Password'
+      answer:
+        - '10.22.78.10'
+        - '{{ linux_user }}'
+        - '/home/{{ linux_user }}/CNIT450Ansible/renderedconfigs/{{ hostname }}'
+        - ''
+        - '{{ scp_password }}'
 
 - name: Reboot Device
   ios_command:
-    commands: 'reload'
-    prompt:
-      - 'Proceed with reload? \[confirm\]'
-    answer:
-      - '\r'
+    commands: 
+    - command: 'reload'
+      check_all: True
+      prompt:
+        - 'Save'
+        - 'confirm'
+      answer:
+        - 'n'
+        - ''
 
 - name: Wait for Reboot
   wait_for_connection:

@@ -4,7 +4,7 @@ linux_user: tlee
 short_hostname: "{{ hostname | regex_search('..$') }}"
 ansible_user: admin
 ansible_password: password
-ansible_secret: enpassword
+become_password: enterprise
 scp_password: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       31643931353661333864646565303063306636643737623631333863333064356165663932313333
