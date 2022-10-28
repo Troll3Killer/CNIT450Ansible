@@ -1,9 +1,10 @@
 ---
-#- name: Render template
-#  template:
-#    src: templates/{{ template }}
-#    dest: renderedconfigs/{{ hostname }}
-- name: Easy task
+- name: Render template
+  template:
+    src: templates/{{ template }}
+    dest: renderedconfigs/{{ hostname }}
+    
+- name: Logging Sync
   ios_config: 
     lines: logging sync
     parents: line vty 0 4
@@ -44,4 +45,3 @@
     timeout: 1200
   vars:
     ansible_command_timeout: 1200
-    
