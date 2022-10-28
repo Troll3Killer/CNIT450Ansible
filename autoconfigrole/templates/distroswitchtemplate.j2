@@ -284,18 +284,18 @@ banner motd ^CCCNo Unathorized Users!^C
 line con 0
  secret enterprise
  logging synchronous
- login
+ login local
  stopbits 1
 line aux 0
  stopbits 1
 line vty 0 4
  secret enterprise
  transport input ssh
- login
+ login local
 line vty 5 15
  secret enterprise
  transport input ssh
- login
+ login local
 !
 
 vlan 2

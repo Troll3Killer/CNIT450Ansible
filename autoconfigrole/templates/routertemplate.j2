@@ -134,12 +134,13 @@ line con 0
  logging synchronous
  secret enterprise
  stopbits 1
+ login local
 line aux 0
  stopbits 1
 line vty 0 4
  secret enterprise
  transport input ssh
- login
+ login local
 !
 !
 snmp-server community snmpiscool RO
