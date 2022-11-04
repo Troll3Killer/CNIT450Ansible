@@ -1,9 +1,3 @@
-version 15.2
-no service pad
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-service compress-config
 !
 hostname na-ansible-d1
 !
@@ -19,7 +13,7 @@ vrf definition Mgmt-vrf
  address-family ipv6
  exit-address-family
 !
-enable secret 5 $1$OIsU$kV3msRaxpD5UVBq10x.9D0
+enable secret enterprise
 !
 no aaa new-model
 !
@@ -266,18 +260,18 @@ banner motd ^CCCNo Unathorized Users!^C
 line con 0
  secret enterprise
  logging synchronous
- login
+ login local
  stopbits 1
 line aux 0
  stopbits 1
 line vty 0 4
  secret enterprise
  transport input ssh
- login
+ login local
 line vty 5 15
  secret enterprise
  transport input ssh
- login
+ login local
 !
 
 vlan 2

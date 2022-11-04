@@ -46,6 +46,6 @@
   vars:
     ansible_command_timeout: 1200
 
-- name: Reboot Device
+- name: Save config
   ios_command:
     commands: 'wr'
