@@ -1,6 +1,21 @@
 hostname {{ hostname }}
 !
 !
+vlan 2
+name HR
+vlan 3
+name Finance
+vlan 4
+name Executive
+vlan 5
+name User
+vlan 6 
+name Guest
+vlan 7
+name Voice
+vlan 99
+name Management
+!
 enable password enterprise
 !
 user admin algorithm-type scrypt secret password
@@ -55,21 +70,6 @@ line vty 5 15
  secret enterprise
  transport input ssh
  login local
-!
-vlan 2
-name HR
-vlan 3
-name Finance
-vlan 4
-name Executive
-vlan 5
-name User
-vlan 6 
-name Guest
-vlan 7
-name Voice
-vlan 99
-name Management
 !
 vtp domain CNITfa22
 vtp version 3

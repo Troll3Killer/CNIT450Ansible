@@ -19,6 +19,26 @@ no aaa new-model
 !
 !
 !
+vlan 2
+name HR
+vlan 3
+name Finance
+vlan 4
+name Executive
+vlan 5
+name User
+vlan 6 
+name Guest
+vlan 7
+name Voice
+vlan 99
+name Management
+!
+vtp domain CNITfa22
+vtp version 3
+vtp mode server
+vtp password cnit450
+!
 !
 user admin algorithm-type scrypt secret password
 !
@@ -297,27 +317,6 @@ line vty 5 15
  transport input ssh
  login local
 !
-
-vlan 2
-name HR
-vlan 3
-name Finance
-vlan 4
-name Executive
-vlan 5
-name User
-vlan 6 
-name Guest
-vlan 7
-name Voice
-vlan 99
-name Management
-
-vtp domain CNITfa22
-vtp version 3
-vtp mode server
-vtp password cnit450
-
 snmp-server community snmpiscool RO
 snmp-server host 10.22.69.200 version 2c snmpiscool
 snmp-server enable traps

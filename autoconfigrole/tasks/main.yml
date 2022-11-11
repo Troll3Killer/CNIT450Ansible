@@ -4,6 +4,10 @@
     src: templates/{{ template }}
     dest: renderedconfigs/{{ hostname }}
 
+- name: Pause for Device to Connect
+  pause:
+    seconds: 30
+
 - name: Logging Sync
   ios_config: 
     lines: logging sync
