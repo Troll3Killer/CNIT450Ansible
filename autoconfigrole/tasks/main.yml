@@ -6,17 +6,50 @@
 
 - name: Pause for Device to Connect
   pause:
-    seconds: 30
+    seconds: 10
 
 - name: Logging Sync
   ios_config: 
     lines: logging sync
     parents: line vty 0 4
 
+- name: VLAN config
+  ios_vlans:
+    config:
+    - name: HR
+      vlan_id: 2
+      state: active
+      shutdown: disabled
+    - name: Finance
+      vlan_id: 3
+      state: active
+      shutdown: disabled
+    - name: Executive
+      vlan_id: 4
+      state: active
+      shutdown: disabled
+    - name: User
+      vlan_id: 5
+      state: active
+      shutdown: disabled
+    - name: Guest
+      vlan_id: 6
+      state: active
+      shutdown: disabled
+    - name: Voice
+      vlan_id: 7
+      state: active
+      shutdown: disabled
+    - name: Management
+      vlan_id: 99
+      state: active
+      shutdown: disabled
+    state: merged
+
 - name: Deploy Configuration File
   ios_command:
     commands: 
-    - command: 'copy scp: startup-config'
+    - command: 'copy scp: running-config'
       check_all: True
       prompt:
         - 'Address'
@@ -31,6 +64,10 @@
         - ''
         - '{{ scp_password }}'
 
+- name: Save config
+  ios_command:
+    commands: 'wr'
+
 - name: Reboot Device
   ios_command:
     commands: 
@@ -42,6 +79,7 @@
       answer:
         - 'n'
         - ''
+  ignore_errors: yes
 
 - name: Wait for Reboot
   wait_for_connection:
@@ -49,7 +87,3 @@
     timeout: 1200
   vars:
     ansible_command_timeout: 1200
-
-- name: Save config
-  ios_command:
-    commands: 'wr'

@@ -130,6 +130,7 @@ standby 1 preempt
 standby 2 ipv6 {{ vars[short_hostname+'_ip_address'].vlan_2.hsrpv6_address }}
 standby 2 preempt
 ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_2.ipv6_address }}
+no shut
 !
 interface Vlan3
 ip address {{ vars[short_hostname+'_ip_address'].vlan_3.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_3.subnet_mask }}
@@ -143,6 +144,7 @@ standby 1 preempt
 standby 2 ipv6 {{ vars[short_hostname+'_ip_address'].vlan_3.hsrpv6_address }}
 standby 2 preempt
 ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_3.ipv6_address }}
+no shut
 !
 interface Vlan4
 ip address {{ vars[short_hostname+'_ip_address'].vlan_4.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_4.subnet_mask }}
@@ -156,6 +158,7 @@ standby 1 preempt
 standby 2 ipv6 {{ vars[short_hostname+'_ip_address'].vlan_4.hsrpv6_address }}
 standby 2 preempt
 ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_4.ipv6_address }}
+no shut
 !
 interface Vlan5
 ip address {{ vars[short_hostname+'_ip_address'].vlan_5.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_5.subnet_mask }}
@@ -169,6 +172,7 @@ standby 1 preempt
 standby 2 ipv6 {{ vars[short_hostname+'_ip_address'].vlan_5.hsrpv6_address }}
 standby 2 preempt
 ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_5.ipv6_address }}
+no shut
 !
 interface Vlan6
 ip address {{ vars[short_hostname+'_ip_address'].vlan_6.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_6.subnet_mask }}
@@ -182,6 +186,7 @@ standby 1 preempt
 standby 2 ipv6 {{ vars[short_hostname+'_ip_address'].vlan_6.hsrpv6_address }}
 standby 2 preempt
 ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_6.ipv6_address }}
+no shut
 !
 interface Vlan7
 ip address {{ vars[short_hostname+'_ip_address'].vlan_7.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_7.subnet_mask }}
@@ -195,6 +200,7 @@ standby 1 preempt
 standby 2 ipv6 {{ vars[short_hostname+'_ip_address'].vlan_7.hsrpv6_address }}
 standby 2 preempt
 ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_7.ipv6_address }}
+no shut
 !
 interface Vlan99
 ip address {{ vars[short_hostname+'_ip_address'].vlan_99.ip_address }} {{ vars[short_hostname+'_ip_address'].vlan_99.subnet_mask }}
@@ -208,6 +214,7 @@ standby 1 preempt
 standby 2 ipv6 {{ vars[short_hostname+'_ip_address'].vlan_99.hsrpv6_address }}
 standby 2 preempt
 ipv6 address {{ vars[short_hostname+'_ip_address'].vlan_99.ipv6_address }}
+no shut
 !
 !
 !

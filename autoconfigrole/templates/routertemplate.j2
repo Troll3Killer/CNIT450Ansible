@@ -10,6 +10,7 @@ interface GigabitEthernet0/0/0
  no ip address
  negotiation auto
  ipv6 address {{ vars[short_hostname+'_ip_address'].g0_0_0.ipv6_address }}
+ no shut
 !
 {% endif %}
 !
@@ -25,6 +26,7 @@ interface GigabitEthernet0/0/1
  ip address {{ vars[short_hostname+'_ip_address'].g0_0_1.ip_address }} {{ vars[short_hostname+'_ip_address'].g0_0_1.subnet_mask }}
  negotiation auto
  ipv6 address {{ vars[short_hostname+'_ip_address'].g0_0_1.ipv6_address }}
+ no shut
 !
 {% endif %}
 {% if 'r3' in hostname or 'r4' in hostname %}
