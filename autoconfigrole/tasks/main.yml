@@ -53,6 +53,7 @@
       state: active
       shutdown: disabled
     state: overridden
+  when: "'d' in short_hostname or 's' in short_hostname"
 
 - name: Save config
   ios_command:
