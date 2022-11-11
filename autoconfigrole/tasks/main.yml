@@ -4,14 +4,22 @@
     src: templates/{{ template }}
     dest: renderedconfigs/{{ hostname }}
 
-- name: Pause for Device to Connect
+- name: Pause for Device to Be Ready
   pause:
-    seconds: 10
+    seconds: 20
 
 - name: Logging Sync
   ios_config: 
     lines: logging sync
     parents: line vty 0 4
+
+- name: VTP Primary Server
+  ios_command:
+    commands:
+    - command: vtp primary
+      prompt: confirm
+      answer: ''
+  when: "'d1' in hostname"
 
 - name: VLAN config
   ios_vlans:
@@ -44,12 +52,16 @@
       vlan_id: 99
       state: active
       shutdown: disabled
-    state: merged
+    state: overridden
+
+- name: Save config
+  ios_command:
+    commands: 'wr'
 
 - name: Deploy Configuration File
   ios_command:
     commands: 
-    - command: 'copy scp: running-config'
+    - command: 'copy scp: startup-config'
       check_all: True
       prompt:
         - 'Address'
@@ -63,10 +75,6 @@
         - '/home/{{ linux_user }}/CNIT450Ansible/renderedconfigs/{{ hostname }}'
         - ''
         - '{{ scp_password }}'
-
-- name: Save config
-  ios_command:
-    commands: 'wr'
 
 - name: Reboot Device
   ios_command:

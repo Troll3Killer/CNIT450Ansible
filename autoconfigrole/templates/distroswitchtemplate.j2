@@ -309,18 +309,18 @@ ip http secure-server
 banner motd ^CCCNo Unathorized Users!^C
 !
 line con 0
- secret enterprise
+ password enterprise
  logging synchronous
  login local
  stopbits 1
 line aux 0
  stopbits 1
 line vty 0 4
- secret enterprise
+ password enterprise
  transport input ssh
  login local
 line vty 5 15
- secret enterprise
+ password enterprise
  transport input ssh
  login local
 !
