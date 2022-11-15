@@ -4,10 +4,6 @@
     src: templates/{{ template }}
     dest: renderedconfigs/{{ hostname }}
 
-- name: Pause for Device to Be Ready
-  pause:
-    seconds: 20
-
 - name: Logging Sync
   ios_config: 
     lines: logging sync
@@ -55,14 +51,10 @@
     state: overridden
   when: "'d' in short_hostname or 's' in short_hostname"
 
-- name: Save config
-  ios_command:
-    commands: 'wr'
-
 - name: Deploy Configuration File
   ios_command:
     commands: 
-    - command: 'copy scp: startup-config'
+    - command: 'copy scp: running-config'
       check_all: True
       prompt:
         - 'Address'
@@ -77,22 +69,10 @@
         - ''
         - '{{ scp_password }}'
 
-- name: Reboot Device
+- name: Save config
   ios_command:
-    commands: 
-    - command: 'reload'
-      check_all: True
-      prompt:
-        - 'Save'
-        - 'confirm'
-      answer:
-        - 'n'
-        - ''
-  ignore_errors: yes
+    commands: 'wr'
 
-- name: Wait for Reboot
-  wait_for_connection:
-    delay: 10
-    timeout: 1200
-  vars:
-    ansible_command_timeout: 1200
+- name: Pause for Device to Be Ready
+  pause:
+    seconds: 20
