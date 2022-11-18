@@ -1,13 +1,13 @@
 hostname {{ hostname }}
 enable secret enterprise
 ipv6 unicast-routing
-user admin algorithm-type scrypt secret password
+username admin algorithm-type scrypt secret password
 ip ssh version 2
 ip domain name 450-001.net
 !
 {% if 'r1' in hostname or 'r2' in hostname %}
 interface GigabitEthernet0/0/0
- no ip address
+ ip address {{ vars[short_hostname+'_ip_address'].g0_0_0.ip_address }} {{ vars[short_hostname+'_ip_address'].g0_0_0.subnet_mask }}
  negotiation auto
  ipv6 address {{ vars[short_hostname+'_ip_address'].g0_0_0.ipv6_address }}
  no shut
@@ -29,7 +29,14 @@ interface GigabitEthernet0/0/1
  no shut
 !
 {% endif %}
-{% if 'r3' in hostname or 'r4' in hostname %}
+{% if 'r3' in hostname %}
+interface s0/1/0
+ no shut
+ ip add {{ vars[short_hostname+'_ip_address'].s0_0_0.ip_address }} {{ vars[short_hostname+'_ip_address'].s0_0_0.subnet_mask }}
+ ipv6 add {{ vars[short_hostname+'_ip_address'].s0_0_0.ipv6_address }}
+ exit
+{% endif %}
+{% if 'r4' in hostname %}
 interface s0/0/0
  no shut
  ip add {{ vars[short_hostname+'_ip_address'].s0_0_0.ip_address }} {{ vars[short_hostname+'_ip_address'].s0_0_0.subnet_mask }}
@@ -50,6 +57,7 @@ router eigrp NA-EIGRP
  address-family ipv4 unicast autonomous-system 65510
   !
   topology base
+    redistribute static metric 10000 10 255 1 1500
   exit-af-topology
   network 10.22.0.0 0.0.255.255
   eigrp router-id {{ vars[short_hostname+'_ip_address'].eigrp.ipv4.router_id }}
@@ -58,6 +66,7 @@ router eigrp NA-EIGRP
  address-family ipv6 unicast autonomous-system 65510
   !
   topology base
+   redistribute static metric 10000 10 255 1 1500
   exit-af-topology
   eigrp router-id {{ vars[short_hostname+'_ip_address'].eigrp.ipv6.router_id }}
  exit-address-family
@@ -102,8 +111,14 @@ set pfs group24
 set transform-set IPSECTUNNELTS
 exit
 
+{% if 'r3' in hostname %}
+interface s0/1/0
+crypto map IPSECTUNNELCM
+{% endif %}
+{% if 'r4' in hostname %}
 interface s0/0/0
 crypto map IPSECTUNNELCM
+{% endif %}
 
 interface tunnel 1
 ip address {{ vars[short_hostname+'_ip_address'].tunnel1.ip_address }} {{ vars[short_hostname+'_ip_address'].tunnel1.subnet_mask }}
@@ -121,26 +136,43 @@ tunnel destination {{ r3_ip_address.s0_0_0.ip_address }}
 router bgp 65510
  bgp router-id {{ vars[short_hostname+'_ip_address'].bgp.ipv6.router_id }}
  bgp log-neighbor-changes
+ neighbor {{ vars[short_hostname+'_ip_address'].bgp.ipv4.neighbor }} remote-as 64512
  neighbor {{ vars[short_hostname+'_ip_address'].bgp.ipv6.neighbor }} remote-as 64512
  !
+ address-family ipv4
+  neighbor {{ vars[short_hostname+'_ip_address'].bgp.ipv4.neighbor }} activate
+  network {{ vars[short_hostname+'_ip_address'].bgp.ipv4.network }} mask {{ vars[short_hostname+'_ip_address'].bgp.ipv4.subnet_mask }}
+  redistribute connected
+  redistribute eigrp 65510
+!
  address-family ipv6
+  redistribute connected
+  redistribute eigrp 65510
   network {{ vars[short_hostname+'_ip_address'].bgp.ipv6.network }}
   neighbor {{ vars[short_hostname+'_ip_address'].bgp.ipv6.neighbor }} activate
  exit-address-family
 !
-!ADD IPV4, DEFAULT ROUTE, AND REDISTRIBUTE LATER
+ip forward-protocol nd
+no ip http server
+ip http secure-server
+ip tftp source-interface GigabitEthernet0
+!
+ipv6 route ::/0 GigabitEthernet0/0/0 2001:DB8::21:0:1
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0/0 10.22.2.1
+!
+control-plane
 !
 {% endif %}
 line con 0
  exec-timeout 0 0
  logging synchronous
- secret enterprise
+ password enterprise
  stopbits 1
  login local
 line aux 0
  stopbits 1
 line vty 0 4
- secret enterprise
+ password enterprise
  transport input ssh
  login local
 !

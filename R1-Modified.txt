@@ -1,0 +1,115 @@
+hostname na-pod-R1
+!
+boot-start-marker
+boot-end-marker
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+subscriber templating
+!
+ipv6 unicast-routing
+!
+multilink bundle-name authenticated
+!
+license udi pid ISR4331/K9 sn FLM24090B9A
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+redundancy
+ mode none
+!
+interface GigabitEthernet0/0/0
+ ip address 10.22.2.2 255.255.255.252
+ negotiation auto
+ ipv6 address 2001:DB8::21:0:2/126
+!
+interface GigabitEthernet0/0/1
+ ip address 10.22.71.1 255.255.255.0
+ negotiation auto
+ ipv6 address 2001:DB8::FF:71:0:1/96
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ negotiation auto
+!
+interface Serial0/1/0
+ no ip address
+!
+interface Serial0/1/1
+ no ip address
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ negotiation auto
+!
+router eigrp NA-EIGRP
+ !
+ address-family ipv4 unicast autonomous-system 65510
+  !
+  topology base
+   redistribute static metric 10000 10 255 1 1500
+  exit-af-topology
+  network 10.22.71.0 0.0.0.255
+  eigrp router-id 1.1.1.1
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 65510
+  !
+  topology base
+   redistribute static metric 10000 10 255 1 1500
+  exit-af-topology
+  eigrp router-id 1.1.1.1
+ exit-address-family
+!
+router bgp 65510
+ bgp router-id 1.1.1.1
+ bgp log-neighbor-changes
+ neighbor 10.22.2.1 remote-as 64512
+ neighbor 2001:DB8::21:0:1 remote-as 64512
+ !
+ address-family ipv4
+  neighbor 10.22.2.1 activate
+  network 10.22.2.0 mask 255.255.255.252
+  redistribute connected
+  redistribute eigrp 65510
+ address-family ipv6
+  redistribute connected
+  redistribute eigrp 65510
+  network 2001:DB8::21:0:0/126
+  neighbor 2001:DB8::21:0:1 activate
+ exit-address-family
+!
+ip forward-protocol nd
+no ip http server
+ip http secure-server
+ip tftp source-interface GigabitEthernet0
+!
+ipv6 route ::/0 GigabitEthernet0/0/0 2001:DB8::21:0:1
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0/0 10.22.2.1
+!
+control-plane
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ transport input none
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+password enterprise
+ login
+!
+ntp server 10.22.71.2
+
+snmp-server community snmpiscool RO
+snmp-server host 10.22.69.200 version 2c snmpiscool
+snmp-server enable traps
+

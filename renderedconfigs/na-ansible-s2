@@ -1,61 +1,5 @@
 hostname na-ansible-s2
 !
-!
-enable password enterprise
-!
-user admin algorithm-type scrypt secret password
-ip ssh version 2
-ip domain name 450-001.net
-!
-interface FastEthernet0/3
- switchport mode trunk
-!
-interface FastEthernet0/4
- switchport mode trunk
-!
-interface Vlan2
- ip address 10.22.79.8 255.255.255.0
- ipv6 address 2001:db8:0:0:00ff:79::8/96
-!
-interface Vlan3
- ip address 10.22.80.8 255.255.255.0
- ipv6 address 2001:db8:0:0:00ff:80::8/96
-!
-interface Vlan4
- ip address 10.22.81.8 255.255.255.0
- ipv6 address 2001:db8:0:0:00ff:81::8/96
-!
-interface Vlan5
- ip address 10.22.82.8 255.255.255.0
- ipv6 address 2001:db8:0:0:00ff:82::8/96
-!
-interface Vlan6
- ip address 10.22.83.8 255.255.255.0
- ipv6 address 2001:db8:0:0:00ff:83::8/96
-!
-interface Vlan7
- ip address 10.22.84.8 255.255.255.0
- ipv6 address 2001:db8:0:0:00ff:84::8/96
-!
-interface Vlan99
- ip address 10.22.78.8 255.255.255.0
- ipv6 address 2001:db8:0:0:00ff:78::8/96
-!
-!
-!
-line con 0
- secret enterprise
- logging synchronous
- login
-line vty 0 4
- secret enterprise
- transport input ssh
- login
-line vty 5 15
- secret enterprise
- transport input ssh
- login
-!
 vlan 2
 name HR
 vlan 3
@@ -70,6 +14,54 @@ vlan 7
 name Voice
 vlan 99
 name Management
+!
+enable password enterprise
+!
+username admin algorithm-type scrypt secret password
+ip ssh version 2
+ip domain name 450-001.net
+!
+interface FastEthernet0/3
+ switchport mode trunk
+!
+interface FastEthernet0/4
+ switchport mode trunk
+!
+interface Vlan2
+ ip address 10.22.79.8 255.255.255.0
+!
+interface Vlan3
+ ip address 10.22.80.8 255.255.255.0
+!
+interface Vlan4
+ ip address 10.22.81.8 255.255.255.0
+!
+interface Vlan5
+ ip address 10.22.82.8 255.255.255.0
+!
+interface Vlan6
+ ip address 10.22.83.8 255.255.255.0
+!
+interface Vlan7
+ ip address 10.22.84.8 255.255.255.0
+!
+interface Vlan99
+ ip address 10.22.78.8 255.255.255.0
+!
+!
+!
+line con 0
+ password enterprise
+ logging synchronous
+ login local
+line vty 0 4
+ password enterprise
+ transport input ssh
+ login local
+line vty 5 15
+ password enterprise
+ transport input ssh
+ login local
 !
 vtp domain CNITfa22
 vtp version 3

@@ -1,7 +1,7 @@
 hostname na-ansible-r3
 enable secret enterprise
 ipv6 unicast-routing
-user admin algorithm-type scrypt secret password
+username admin algorithm-type scrypt secret password
 ip ssh version 2
 ip domain name 450-001.net
 !
@@ -11,7 +11,7 @@ interface GigabitEthernet0/0/0
  no shut
 !
 !
-interface s0/0/0
+interface s0/1/0
  no shut
  ip add 10.22.88.1 255.255.255.0
  ipv6 add 2001:db8:0:0:00ff:88::1/96
@@ -23,6 +23,7 @@ router eigrp NA-EIGRP
  address-family ipv4 unicast autonomous-system 65510
   !
   topology base
+    redistribute static metric 10000 10 255 1 1500
   exit-af-topology
   network 10.22.0.0 0.0.255.255
   eigrp router-id 13.3.3.3
@@ -31,6 +32,7 @@ router eigrp NA-EIGRP
  address-family ipv6 unicast autonomous-system 65510
   !
   topology base
+   redistribute static metric 10000 10 255 1 1500
   exit-af-topology
   eigrp router-id 13.3.3.3
  exit-address-family
@@ -59,7 +61,7 @@ set pfs group24
 set transform-set IPSECTUNNELTS
 exit
 
-interface s0/0/0
+interface s0/1/0
 crypto map IPSECTUNNELCM
 
 interface tunnel 1
@@ -71,14 +73,15 @@ tunnel destination 10.22.88.2
 line con 0
  exec-timeout 0 0
  logging synchronous
- secret enterprise
+ password enterprise
  stopbits 1
+ login local
 line aux 0
  stopbits 1
 line vty 0 4
- secret enterprise
+ password enterprise
  transport input ssh
- login
+ login local
 !
 !
 snmp-server community snmpiscool RO
