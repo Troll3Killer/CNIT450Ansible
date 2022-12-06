@@ -1,0 +1,161 @@
+---
+- name: Autoconfigure Network
+  hosts: all
+  any_errors_fatal: true
+  become: yes
+  become_method: enable
+  connection: network_cli
+  gather_facts: no
+  vars:
+    ansible_user: admin
+    ansible_password: password
+    ansible_become_password: enterprise
+    ansible_network_os: ios
+
+  tasks:
+  - name: Configure IPv4 OSPFv3
+    ios_config:
+      lines:
+      - router-id {{ router_id }}
+      parents: 
+      - router ospfv3 1
+      - address-family ipv4 unicast
+
+  - name: Configure IPv6 OSPFv3
+    ios_config:
+      lines:
+      - router-id {{ router_id }}
+      parents: 
+      - router ospfv3 1
+      - address-family ipv6 unicast
+
+  
+  - name: Apply IPv6 OSPF to interface G0/1
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface g0/1
+    when: hostname is search("r4")
+ 
+  - name: Apply IPv6 OSPF to interface G0/0/0
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface g0/0/0
+    when: (hostname is search("r1")) or (hostname is search("r2")) or (hostname is search("r3"))
+
+  - name: Apply IPv6 OSPF to interface G0/0/1
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface g0/0/1
+    when: (hostname is search("r1")) or (hostname is search("r2"))
+
+  - name: Apply IPv6 OSPF to interface S0/1/0
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface S0/1/0
+    when: 
+      - hostname is search("r3")
+
+  - name: Apply IPv6 OSPF to interface S0/0/0
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface S0/0/0
+    when: 
+      - hostname is search("r4")
+
+  - name: Apply IPv6 OSPF to interface G1/0/1
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface g1/0/1
+    when: (hostname is search("d1")) or (hostname is search("d2"))
+
+  - name: Apply IPv6 OSPF to interface G1/0/2
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface g1/0/2
+    when: (hostname is search("d1")) or (hostname is search("d2"))
+
+  - name: Apply IPv6 OSPF to interface G1/0/5
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface g1/0/5
+    when: 
+      - hostname is search("d1")
+
+  - name: Apply IPv6 OSPF to interface vlan 99
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface vlan 99
+    when: (hostname is search("d1")) or (hostname is search("d2"))
+
+
+  - name: Apply IPv6 OSPF to interface vlan 2
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface vlan 2
+    when: (hostname is search("d1")) or (hostname is search("d2"))
+
+  - name: Apply IPv6 OSPF to interface vlan 3
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface vlan 3
+    when: (hostname is search("d1")) or (hostname is search("d2"))
+
+  - name: Apply IPv6 OSPF to interface vlan 4
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface vlan 4
+    when: (hostname is search("d1")) or (hostname is search("d2"))
+
+  - name: Apply IPv6 OSPF to interface vlan 5
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface vlan 5
+    when: (hostname is search("d1")) or (hostname is search("d2"))
+
+  - name: Apply IPv6 OSPF to interface vlan 6
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface vlan 6
+    when: (hostname is search("d1")) or (hostname is search("d2"))
+
+  - name: Apply IPv6 OSPF to interface vlan 7
+    ios_config:
+      lines:
+      - ospfv3 1 ipv4 area 0
+      - ospfv3 1 ipv6 area 0
+      parents: interface vlan 7
+    when: (hostname is search("d1")) or (hostname is search("d2"))
+
+  - name: Remove EIGRP
+    ios_config:
+      lines:
+      - no router eigrp NA-EIGRP
+  
